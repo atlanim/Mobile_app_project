@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "298035839216",
+    "firebase_url": "https://mobile-app-project-18a21.firebaseio.com",
+    "project_id": "mobile-app-project-18a21",
+    "storage_bucket": "mobile-app-project-18a21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298035839216:android:3286fdd99f3ab8c1",
+        "android_client_info": {
+          "package_name": "ca.ulaval.ima.mp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298035839216-0550ip5c6k5aepn1ria9fekuqoa3ic7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtIPjLbmx0gLGE_QFQDX7cpZVrcpPY6_Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
