@@ -54,9 +54,11 @@ public class SignInFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-        final Button Sign_in = view.findViewById(R.id.SignIn_Button);
+        Button Sign_in = view.findViewById(R.id.SignIn_Button);
 
-        final TextView sign_up = view.findViewById(R.id.Register_text);
+        TextView sign_up = view.findViewById(R.id.Register_text);
+        final EditText Email_edit = view.findViewById(R.id.email);
+        final EditText Password_edit =  view.findViewById(R.id.password);
 
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +70,7 @@ public class SignInFragment extends Fragment {
         Sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText Email_edit = view.findViewById(R.id.Email);
-                EditText Password_edit =  view.findViewById(R.id.Password);
+
 
                 String email = Email_edit.getText().toString();
                 String password = Password_edit.getText().toString();
