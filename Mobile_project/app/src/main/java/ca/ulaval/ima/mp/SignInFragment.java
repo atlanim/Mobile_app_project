@@ -17,22 +17,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import org.w3c.dom.Text;
 
 public class SignInFragment extends Fragment {
-    private FirebaseAuth mAuth;
     private String TAG = "Sign_in";
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
     public SignInFragment() {
@@ -53,12 +45,11 @@ public class SignInFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
         final Button Sign_in = view.findViewById(R.id.SignIn_Button);
 
-        final TextView sign_up = view.findViewById(R.id.Register_text);
+        final Button createAccount = view.findViewById(R.id.CreateAccount_button);
 
-        sign_up.setOnClickListener(new View.OnClickListener() {
+        createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Sign_up(view);
@@ -74,32 +65,21 @@ public class SignInFragment extends Fragment {
                 String email = Email_edit.getText().toString();
                 String password = Password_edit.getText().toString();
 
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        }
-                        else {
-                            Toast.makeText( getContext(),"Registration Failed. Please try again",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
             }
         });
 
     }
 
+
+
     public void Sign_up(View view)
     {
-        SignUpFragment signUp = new SignUpFragment();
+       /* SignUpFragment signUp = new SignUpFragment();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.Main_container, signUp);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        Log.d(TAG, "wtf");
+        Log.d(TAG, "wtf");*/
 
     }
 

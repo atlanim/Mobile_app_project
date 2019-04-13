@@ -6,6 +6,4 @@
     tools:context=".MainActivity"
     android:orientation="vertical"
     android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-    android:id="@+id/Main_container">
-
-</RelativeLayout>
+    android:id="@+id/Main_container"/>

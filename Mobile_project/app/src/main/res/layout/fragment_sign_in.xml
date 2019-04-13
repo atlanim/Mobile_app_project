@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SignInFragment">
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,15 +36,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Your ¨Password"
                 android:layout_gravity="center_vertical"/>
-            <TextView
-                android:id="@+id/Register_text"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="You want to register"
-                android:textColor="@color/colorAccent"
-                android:clickable="true"
-                android:padding="10dp"/>
 
         </LinearLayout>
         <RelativeLayout
@@ -51,15 +43,29 @@
             android:layout_height="0px"
             android:layout_weight="3"
             android:id="@+id/textcontainer">
+
             <Button
                 android:id="@+id/SignIn_Button"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/colorPrimary"
+                android:layout_marginBottom="217dp"
+                android:background="@color/colorPrimaryDark"
                 android:text="Sign in"
                 android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/CreateAccount_button"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="128dp"
+                android:background="@color/colorPrimary"
+                android:strokeColor="@color/colorPrimary"
+                android:text="Create an account"
+                android:textColor="@color/colorPrimaryDark" />
         </RelativeLayout>
     </LinearLayout>
 
