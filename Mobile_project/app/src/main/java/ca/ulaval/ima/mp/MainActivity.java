@@ -9,6 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements ConnectionFragment.OnFragmentConnectionInteractionListener, SignInFragment.OnFragmentInteractionListener {
@@ -19,15 +24,15 @@ public class MainActivity extends AppCompatActivity implements ConnectionFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         Fragment newFragment = new ConnectionFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.Main_container, newFragment);
         fragmentTransaction.commit();
-
     }
-
 
     @Override
     public void onStart() {
@@ -44,11 +49,11 @@ public class MainActivity extends AppCompatActivity implements ConnectionFragmen
     @Override
     public void displayToast() {
 
-            this.runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            });
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -73,5 +78,4 @@ public class MainActivity extends AppCompatActivity implements ConnectionFragmen
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 }

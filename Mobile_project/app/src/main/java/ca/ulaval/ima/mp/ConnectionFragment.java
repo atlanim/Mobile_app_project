@@ -79,19 +79,13 @@ public class ConnectionFragment extends Fragment implements MyWebViewClient.OnGe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.connection_fragment, container, false);
-        final Button authentification = view.findViewById(R.id.buttonAuth);
         webView = view.findViewById(R.id.webView2);
 
         webView.getSettings().setJavaScriptEnabled(true);
         MyWebViewClient MyWebViewClient = new MyWebViewClient();
         webView.setWebViewClient( MyWebViewClient);
         webView.addJavascriptInterface(new MyJavaScriptInterface(this), "android");
-        authentification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                webView.loadUrl(uriAuth);
-            }
-        });
+        webView.loadUrl(uriAuth);
         return view;
     }
 
@@ -149,8 +143,6 @@ public class ConnectionFragment extends Fragment implements MyWebViewClient.OnGe
         });
 
     }
-
-
 
     private void setToken(int code, String responseString) {
         if(code!=200){
