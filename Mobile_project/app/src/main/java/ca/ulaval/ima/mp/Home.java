@@ -148,9 +148,9 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     private void openPlaylistFragment() {
         Fragment newPlaylistFragment = new PlaylistFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.home_activity, newPlaylistFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
