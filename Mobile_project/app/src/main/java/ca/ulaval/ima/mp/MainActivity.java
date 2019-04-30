@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionFragmen
 
     @Override
     public void showAlertDiaglog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("The combinaison of username and password is incorrect");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

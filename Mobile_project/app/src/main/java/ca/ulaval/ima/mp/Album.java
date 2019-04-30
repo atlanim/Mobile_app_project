@@ -15,6 +15,18 @@ public class Album implements Parcelable {
     }
 
 
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
+        @Override
+        public Album createFromParcel(Parcel in) {
+            return new Album(in);
+        }
+
+        @Override
+        public Album[] newArray(int size) {
+            return new Album[size];
+        }
+    };
+
     public String getAlbumId() {
         return albumId;
     }
@@ -29,17 +41,7 @@ public class Album implements Parcelable {
         this.albumId = albumId;
     }
 
-    public static final Creator<UserParameters> CREATOR = new Creator<UserParameters>() {
-        @Override
-        public UserParameters createFromParcel(Parcel in) {
-            return new UserParameters(in);
-        }
 
-        @Override
-        public UserParameters[] newArray(int size) {
-            return new UserParameters[size];
-        }
-    };
 
     @Override
     public int describeContents() {

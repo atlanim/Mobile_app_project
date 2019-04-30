@@ -9,14 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
-
 import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListAlbumTrackFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListTrackFragmentInteractionListener}
  * interface.
  */
 public class TrackFragment extends Fragment {
@@ -27,7 +25,7 @@ public class TrackFragment extends Fragment {
     private static final String ARG_TRACK_LIST ="track-list" ;
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListAlbumTrackFragmentInteractionListener mListener;
+    private OnListTrackFragmentInteractionListener mListener;
     private ArrayList<Track> mTracks;
 
     /**
@@ -79,8 +77,8 @@ public class TrackFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListAlbumTrackFragmentInteractionListener) {
-            mListener = (OnListAlbumTrackFragmentInteractionListener) context;
+        if (context instanceof OnListTrackFragmentInteractionListener) {
+            mListener = (OnListTrackFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentAlbumTrackInteractionListener");
@@ -93,7 +91,7 @@ public class TrackFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnListAlbumTrackFragmentInteractionListener {
+    public interface OnListTrackFragmentInteractionListener {
 
         void onListAlbumTrackFragmentInteraction(String trackId);
     }

@@ -37,7 +37,6 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getAlbumName());
-
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

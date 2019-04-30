@@ -6,22 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ca.ulaval.ima.mp.TrackFragment.OnListAlbumTrackFragmentInteractionListener;
+import ca.ulaval.ima.mp.TrackFragment.OnListTrackFragmentInteractionListener;
 import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListAlbumTrackFragmentInteractionListener}.
+ * specified {@link OnListTrackFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecyclerViewAdapter.ViewHolder> {
 
     private final List<Track> mValues;
-    private final OnListAlbumTrackFragmentInteractionListener mListener;
+    private final OnListTrackFragmentInteractionListener mListener;
 
-    public MyTrackRecyclerViewAdapter(List<Track> tracks, OnListAlbumTrackFragmentInteractionListener listener) {
+    public MyTrackRecyclerViewAdapter(List<Track> tracks, OnListTrackFragmentInteractionListener listener) {
         mValues = tracks;
         mListener = listener;
     }
@@ -37,7 +37,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getTrackName());
-        //holder.mIdView.setter ici un buttonplay
+        holder.mArtistName.setText("Artiste:   "   + mValues.get(position).getArtistName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,15 +56,15 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mContentView;
+        public final TextView mArtistName;
         public Track mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
             mContentView = (TextView) view.findViewById(R.id.content);
+            mArtistName = (TextView) view.findViewById(R.id.track_artist_name);
         }
 
         @Override

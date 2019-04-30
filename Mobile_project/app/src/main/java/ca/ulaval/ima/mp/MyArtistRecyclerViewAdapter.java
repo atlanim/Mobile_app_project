@@ -6,26 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ca.ulaval.ima.mp.ArtistFragment.OnListFragmentInteractionListener;
-import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
+import ca.ulaval.ima.mp.ArtistFragment.OnListFragmentArtistInteractionListener;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyArtistRecyclerViewAdapter extends RecyclerView.Adapter<MyArtistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Artist> mValues;
+    private final OnListFragmentArtistInteractionListener mListener;
 
-    public MyArtistRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyArtistRecyclerViewAdapter(List<Artist> artists, OnListFragmentArtistInteractionListener listener) {
+        mValues = artists;
         mListener = listener;
     }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -36,8 +29,7 @@ public class MyArtistRecyclerViewAdapter extends RecyclerView.Adapter<MyArtistRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mContentView.setText(mValues.get(position).getArtistName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,11 +37,12 @@ public class MyArtistRecyclerViewAdapter extends RecyclerView.Adapter<MyArtistRe
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListArtistFragmentInteraction(holder.mItem);
                 }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -58,14 +51,12 @@ public class MyArtistRecyclerViewAdapter extends RecyclerView.Adapter<MyArtistRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Artist mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
@@ -74,4 +65,5 @@ public class MyArtistRecyclerViewAdapter extends RecyclerView.Adapter<MyArtistRe
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+
 }

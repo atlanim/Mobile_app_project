@@ -13,21 +13,25 @@ import android.view.ViewGroup;
 import ca.ulaval.ima.mp.dummy.DummyContent;
 import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListPlayListFragmentInteractionListener}
  * interface.
  */
 public class PlaylistFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_PLAY_LISTS = "playlist-list";
+    private static final String ARG_PLAY_LIST_NAME = "playlist-name";
+    private ArrayList<PlayList> mPlayList;
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnListPlayListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,10 +42,10 @@ public class PlaylistFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PlaylistFragment newInstance(int columnCount) {
+    public static PlaylistFragment newInstance(ArrayList<PlayList> playLists) {
         PlaylistFragment fragment = new PlaylistFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelableArrayList(ARG_PLAY_LISTS, playLists);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +55,8 @@ public class PlaylistFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mPlayList = new ArrayList<>();
+            mPlayList = getArguments().getParcelableArrayList(ARG_PLAY_LISTS);
         }
     }
 
@@ -64,12 +69,9 @@ public class PlaylistFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(mPlayList, mListener));
         }
         return view;
     }
@@ -78,8 +80,8 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnListPlayListFragmentInteractionListener) {
+            mListener = (OnListPlayListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentAlbumInteractionListener");
@@ -102,8 +104,8 @@ public class PlaylistFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnListPlayListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListPlaylistFragmentInteraction(PlayList playList);
     }
 }
