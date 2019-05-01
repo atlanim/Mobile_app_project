@@ -7,7 +7,11 @@ public class Track implements Parcelable {
     private String trackName;
     private String trackId;
     private String artistName;
+<<<<<<< HEAD
     private String trackPicture;
+=======
+    private String playListId = null;
+>>>>>>> fetchData
 
     public Track(Parcel in) {
         this.trackName = in.readString();
@@ -46,6 +50,14 @@ public class Track implements Parcelable {
         this.trackId = trackId;
         this.artistName = artistName;
         this.trackPicture = trackPicture;
+    }
+
+    public String getPlayListId() {
+        return playListId;
+    }
+
+    public void setPlayListId(String playListId){
+        this.playListId = playListId;
     }
 
     @Override
