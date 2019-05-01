@@ -1,5 +1,7 @@
 package ca.ulaval.ima.mp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +25,13 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     private final List<PlayList> mValues;
     private final OnListPlayListFragmentInteractionListener mListener;
+    private String myprefs = "MyPrefs";
+    private Context context;
 
-    public MyPlaylistRecyclerViewAdapter(List<PlayList> playLists, OnListPlayListFragmentInteractionListener listener) {
+    public MyPlaylistRecyclerViewAdapter(List<PlayList> playLists, OnListPlayListFragmentInteractionListener listener, Context context) {
         mValues = playLists;
         mListener = listener;
+        this.context = context;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getPlayListName());
         Picasso.get().load(mValues.get(position).getPlayListPicture()).into(holder.mImageView);
@@ -45,6 +50,10 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
+                    final SharedPreferences prefs = context.getSharedPreferences(myprefs, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edit = prefs.edit();
+                    edit.putString("playlist_cover", mValues.get(position).getPlayListPicture());
+                    edit.apply();
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListPlaylistFragmentInteraction(holder.mItem);

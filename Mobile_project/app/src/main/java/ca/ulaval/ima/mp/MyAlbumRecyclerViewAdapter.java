@@ -1,5 +1,7 @@
 package ca.ulaval.ima.mp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +27,13 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
 
     private final List<Album> mValues;
     private final OnListFragmentAlbumInteractionListener mListener;
+    private String myprefs = "MyPrefs";
+    private Context context;
 
-    public MyAlbumRecyclerViewAdapter(List<Album> albums, AlbumFragment.OnListFragmentAlbumInteractionListener listener) {
+    public MyAlbumRecyclerViewAdapter(List<Album> albums, AlbumFragment.OnListFragmentAlbumInteractionListener listener, Context context) {
         mValues = albums;
         mListener = listener;
+        this.context = context;
     }
 
     @Override
@@ -39,7 +44,7 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getAlbumName());
         Picasso.get().load(mValues.get(position).getAlbumPicture()).into(holder.mImageView);
@@ -47,6 +52,10 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
+                    final SharedPreferences prefs = context.getSharedPreferences(myprefs, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edit = prefs.edit();
+                    edit.putString("album_cover", mValues.get(position).getAlbumPicture());
+                    edit.apply();
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentAlbumInteraction(holder.mItem);

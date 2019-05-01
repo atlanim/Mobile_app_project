@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 
 public class MeFragment extends Fragment {
@@ -54,9 +57,16 @@ public class MeFragment extends Fragment {
         ImageView picture = view.findViewById(R.id.picture);
         if (!me.getMePicture().equals("")) {
             System.out.println(me.getMePicture());
-            Glide.with(getContext())
-                    .load(me.getMePicture())
-                    .into(picture);
+            if (android.os.Build.VERSION.SDK_INT >= 20) {
+                Glide.with(getContext())
+                        .load(me.getMePicture())
+                        .into(picture);
+            }
+            else {
+                Glide.with(getContext())
+                        .load(R.drawable.ic_avatar)
+                        .into(picture);
+            }
         }
         TextView name = view.findViewById(R.id.name);
         TextView product = view.findViewById(R.id.product);

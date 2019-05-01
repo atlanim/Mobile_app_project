@@ -69,7 +69,7 @@ public class PlaylistFragment extends Fragment {
             Context context = Recycler_view.getContext();
             RecyclerView recyclerView = (RecyclerView) Recycler_view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(mPlayList, mListener));
+            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(mPlayList, mListener, getContext()));
         }
         return view;
     }

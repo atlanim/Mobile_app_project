@@ -55,6 +55,12 @@ public class BiometricActivity extends AppCompatActivity {
         PackageManager packageManager = this.getPackageManager();
 
         if (!keyguardManager.isKeyguardSecure()) {
+            Fragment newMeFragment = MeFragment.newInstance(me);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, newMeFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
             notifyUser("Lock screen security not enabled in Settings");
             return false;
         }
@@ -105,6 +111,7 @@ public class BiometricActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                BiometricActivity.super.onBackPressed();
                                 notifyUser("Authentication cancelled");
                             }
                         })

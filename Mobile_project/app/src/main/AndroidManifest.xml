@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".BiometricActivity"></activity>
+        <activity android:name=".YoutubeActivity"/>
+        <activity android:name=".BiometricActivity" />
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home" />

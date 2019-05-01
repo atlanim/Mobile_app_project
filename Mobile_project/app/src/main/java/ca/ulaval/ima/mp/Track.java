@@ -7,11 +7,13 @@ public class Track implements Parcelable {
     private String trackName;
     private String trackId;
     private String artistName;
+    private String trackPicture;
 
     public Track(Parcel in) {
         this.trackName = in.readString();
         this.trackId =  in.readString();
         this.artistName = in.readString();
+        this.trackPicture = in.readString();
     }
 
 
@@ -39,10 +41,11 @@ public class Track implements Parcelable {
         return trackName;
     }
 
-    public Track(String trackName, String trackId, String artistName) {
+    public Track(String trackName, String trackId, String artistName, String trackPicture) {
         this.trackName = trackName;
         this.trackId = trackId;
         this.artistName = artistName;
+        this.trackPicture = trackPicture;
     }
 
     @Override
@@ -60,5 +63,10 @@ public class Track implements Parcelable {
         dest.writeString(this.trackName);
         dest.writeString(this.trackId);
         dest.writeString(this.artistName);
+        dest.writeString(this.trackPicture);
+    }
+
+    public String getTrackPicture() {
+        return trackPicture;
     }
 }
