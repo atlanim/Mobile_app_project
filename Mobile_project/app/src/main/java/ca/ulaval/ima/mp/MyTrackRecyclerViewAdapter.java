@@ -66,7 +66,8 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+
+                    mListener.playAudio(holder.mItem.getTrackId());
                 }
             }
         });
@@ -74,7 +75,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                    mListener.playVideo(holder.mItem.getTrackId());
                 }
             }
         });
@@ -82,7 +83,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                    mListener.addTrackInPlaylist(holder.mItem.getTrackId());
                 }
             }
         });
@@ -90,7 +91,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                    mListener.removeTrackInPlaylist(holder.mItem.getTrackId(), holder.mItem.getPlayListId());
                 }
             }
         });

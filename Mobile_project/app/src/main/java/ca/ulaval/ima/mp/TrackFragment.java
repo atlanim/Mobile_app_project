@@ -45,11 +45,12 @@ public class TrackFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TrackFragment newInstance(String playListName, ArrayList<Track> tracks) {
+    public static TrackFragment newInstance(String playListName, ArrayList<Track> tracks, boolean isMyPlaylistTrack) {
         TrackFragment fragment = new TrackFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PLAYLIST_NAME, playListName);
         args.putParcelableArrayList(ARG_TRACK_LIST, tracks);
+        args.putBoolean(ARG_IS_MY__PLAYLIST_TRACK, isMyPlaylistTrack);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +62,7 @@ public class TrackFragment extends Fragment {
         if (getArguments() != null) {
             mTracks = new ArrayList<>();
             mTracks = getArguments().getParcelableArrayList(ARG_TRACK_LIST);
+            isMyPlaylistTrack= getArguments().getBoolean(ARG_IS_MY__PLAYLIST_TRACK);
         }
     }
 
@@ -117,5 +119,13 @@ public class TrackFragment extends Fragment {
     public interface OnListTrackFragmentInteractionListener {
 
         void onListAlbumTrackFragmentInteraction(String trackId);
+
+        void playAudio(String trackId);
+
+        void removeTrackInPlaylist(String trackId, String playlistId);
+
+        void addTrackInPlaylist(String trackId);
+
+        void playVideo(String trackId);
     }
 }
