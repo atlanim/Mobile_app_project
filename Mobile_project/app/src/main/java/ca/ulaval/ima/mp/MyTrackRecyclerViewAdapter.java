@@ -41,6 +41,38 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getTrackName());
         holder.mArtistName.setText("Artiste:   "   + mValues.get(position).getArtistName());
+        holder.mPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                }
+            }
+        });
+        holder.mPlay_video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                }
+            }
+        });
+        holder.mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                }
+            }
+        });
+        holder.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                }
+            }
+        });
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +92,10 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         public final View mView;
         public final TextView mContentView;
         public final TextView mArtistName;
+        public final ImageView mPlay;
+        public final ImageView mPlay_video;
+        public final ImageView mAdd;
+        public final ImageView mDelete;
         public Track mItem;
 
         public ViewHolder(View view) {
@@ -67,6 +103,10 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
             mArtistName = (TextView) view.findViewById(R.id.track_artist_name);
+            mPlay = (ImageView) view.findViewById(R.id.play);
+            mPlay_video = (ImageView) view.findViewById(R.id.play_video);
+            mAdd = (ImageView) view.findViewById(R.id.add);
+            mDelete = (ImageView) view.findViewById(R.id.delete);
         }
 
         @Override
