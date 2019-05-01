@@ -2,6 +2,7 @@ package ca.ulaval.ima.mp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,6 +51,8 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
     private Me me = null;
     private ArrayList<Artist> artists = new ArrayList<>();
     private ArrayList<PlayList> playLists;
+    private String myprefs = "MyPrefs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +180,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
             JSONArray images = Jobject.getJSONArray("images");
             JSONObject imagesObject = images.getJSONObject(0);
             String images_url = imagesObject.getString("url");
-            if (images_url.equals("") || images_url==null)
+            if (images_url.equals("") || images_url == null)
                 images_url = "";
             me = new Me(name, birthdate, country, email, followers, images_url, product);
         } catch (Exception exception) {
@@ -194,7 +197,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
             findArtists(responseString);
             openArtistFragment();
         } else if (getType().equalsIgnoreCase("track")) {
-            findTracks(responseString);
+            findTracks(responseString, 0);
             openTrackFragment("noName");
         } else if (getType().equalsIgnoreCase("playlist")) {
             findPlayLists(responseString);
@@ -203,7 +206,41 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     }
 
-    private void findTracks(String responseString) {
+    private void findPlaylistTracks(String responseString, Integer where) throws JSONException {
+        try {
+            tracks = new ArrayList<>();
+            JSONObject Jobject = new JSONObject(responseString);
+            JSONObject tracksJson = Jobject.getJSONObject("tracks");
+            JSONArray itemJArray = tracksJson.getJSONArray("items");
+            final SharedPreferences prefs = getSharedPreferences(myprefs, Context.MODE_PRIVATE);
+            String picture_url = prefs.getString("playlist_cover", null);
+            System.out.println(itemJArray);
+            for (int i = 0; i < itemJArray.length(); i++) {
+                Track track = null;
+                JSONObject trackItem = itemJArray.getJSONObject(i);
+                JSONObject trackobject = trackItem.getJSONObject("track");
+                String id = (String) trackobject .get("id");
+                String name = (String) trackobject .get("name");
+                JSONObject albumJson = trackobject .getJSONObject("album");
+                JSONArray artists = albumJson.getJSONArray("artists");
+                JSONObject artistItem = artists.getJSONObject(0);
+                String artistName = (String) artistItem.get("name");
+                System.out.println(where);
+                if (where == 2) {
+                    track = new Track(name, id, artistName, picture_url);
+                }
+                this.tracks.add(track);
+                System.out.println(this.tracks.get(0).getTrackName());
+            }
+        } catch (Exception exception) {
+            System.out.println("test");
+            exception.printStackTrace();
+        }
+        JSONObject Jobject = new JSONObject(responseString);
+        openTrackFragment(Jobject.getString("name"));
+    }
+
+    private void findTracks(String responseString, Integer where) {
 
         try {
             tracks = new ArrayList<>();
@@ -218,7 +255,19 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 JSONArray artists = albumJson.getJSONArray("artists");
                 JSONObject artistItem = artists.getJSONObject(0);
                 String artistName = (String) artistItem.get("name");
-                Track track = new Track(name, id, artistName);
+                Track track = null;
+                if (where == 0) {
+                    final SharedPreferences prefs = getSharedPreferences(myprefs, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edit = prefs.edit();
+                    edit.remove("album_cover");
+                    edit.remove("playlist_cover");
+                    edit.apply();
+                    JSONArray picture_array = albumJson.getJSONArray("images");
+                    JSONObject picture_object = picture_array.getJSONObject(0);
+                    String picture_url = picture_object.getString("url");
+                    System.out.println(picture_url);
+                    track = new Track(name, id, artistName, picture_url);
+                }
                 this.tracks.add(track);
             }
         } catch (Exception exception) {
@@ -360,7 +409,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     }
 
-    private void getTracks(String searchUrl, final boolean isForAlbum) {
+    private void getTracks(String searchUrl, final boolean isForAlbum, final int i) {
         String token = currentUserParameters.getAccessToken();
         OkHttpClient client = new OkHttpClient();
         HttpUrl httpUrl = HttpUrl.parse(searchUrl).newBuilder()
@@ -385,7 +434,16 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                     if (isForAlbum) {
                         findAlbumTracks(ResponseString);
                     } else {
-                        findTracks(ResponseString);
+                        if (i == 0)
+                            findTracks(ResponseString, i);
+                        else {
+                            System.out.println("test5");
+                            try {
+                                findPlaylistTracks(ResponseString, i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
 
                 }
@@ -401,6 +459,8 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
             tracks = new ArrayList<>();
             JSONObject Jobject = new JSONObject(responseString);
             JSONArray itemJArray = Jobject.getJSONArray("items");
+            final SharedPreferences prefs = getSharedPreferences(myprefs, Context.MODE_PRIVATE);
+            String picture = prefs.getString("album_picture", null);
             for (int i = 0; i < itemJArray.length(); i++) {
                 JSONObject trackItem = itemJArray.getJSONObject(i);
                 JSONArray artists = trackItem.getJSONArray("artists");
@@ -408,7 +468,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 String artistName = (String) artistItem.get("name");
                 String id = (String) trackItem.get("id");
                 String name = (String) trackItem.get("name");
-                Track track = new Track(name, id, artistName);
+                Track track = new Track(name, id, artistName, picture);
                 this.tracks.add(track);
             }
         } catch (Exception exception) {
@@ -450,7 +510,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
     @Override
     public void onListFragmentAlbumInteraction(Album album) {
         String searchUrl = "https://api.spotify.com/v1/albums/" + album.getAlbumId() + "/tracks";
-        getTracks(searchUrl, true);
+        getTracks(searchUrl, true, 1);
         openTrackFragment(album.getAlbumName());
     }
 
@@ -468,8 +528,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     @Override
     public void onListPlaylistFragmentInteraction(PlayList playList) {
-        String searchUrl = "https://api.spotify.com/v1/playlists/" + playList.getPlayListId() + "/tracks";
-        getTracks(searchUrl, true);
-        openTrackFragment(playList.getPlayListName());
+        String searchUrl = "https://api.spotify.com/v1/playlists/" + playList.getPlayListId();
+        getTracks(searchUrl, false, 2);
     }
 }

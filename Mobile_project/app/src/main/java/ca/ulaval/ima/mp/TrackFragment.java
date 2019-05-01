@@ -1,6 +1,7 @@
 package ca.ulaval.ima.mp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -23,6 +29,8 @@ public class TrackFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_PLAYLIST_NAME = "playListName";
     private static final String ARG_TRACK_LIST ="track-list" ;
+    private String myprefs = "MyPrefs";
+
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListTrackFragmentInteractionListener mListener;
@@ -60,15 +68,30 @@ public class TrackFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(mTracks, mListener));
+        View Recycler_view = view.findViewById(R.id.list);
+        ImageView picture_all = view.findViewById(R.id.picture_all);
+        RelativeLayout picture_all_container = view.findViewById(R.id.picture_all_container);
+        final SharedPreferences prefs = getContext().getSharedPreferences(myprefs, Context.MODE_PRIVATE);
+        String pics_check = prefs.getString("playlist_cover", null);
+        System.out.println(pics_check);
+        if (pics_check == null || pics_check.equals(""))
+        {
+            System.out.println("here 3");
+            picture_all_container.setVisibility(View.GONE);
+        }
+        else {
+            picture_all.setVisibility(View.VISIBLE);
+            if (android.os.Build.VERSION.SDK_INT >= 20) {
+                Glide.with(getContext())
+                        .load(pics_check)
+                        .into(picture_all);
+            }
+        }
+        if (Recycler_view instanceof RecyclerView) {
+            Context context = Recycler_view.getContext();
+            RecyclerView recyclerView = (RecyclerView) Recycler_view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(mTracks, mListener, getContext()));
         }
         return view;
     }

@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="ca.ulaval.ima.mp.TrackFragment"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".TrackFragment"
-    tools:listitem="@layout/fragment_track" />
+    android:layout_margin="0dp"
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/picture_all_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/picture_all"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_vinyl"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/SearchResult"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Search Result"
+            android:textColor="#ffffff"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="ca.ulaval.ima.mp.TrackFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff" />
+</LinearLayout>
