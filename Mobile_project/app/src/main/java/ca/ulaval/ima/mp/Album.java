@@ -7,11 +7,12 @@ public class Album implements Parcelable {
 
     private String albumName;
     private String albumId;
+    private String albumPicture;
 
     public Album(Parcel in) {
         this.albumName = in.readString();
         this.albumId =  in.readString();
-
+        this.albumPicture = in.readString();
     }
 
 
@@ -36,9 +37,14 @@ public class Album implements Parcelable {
         return albumName;
     }
 
-    public Album(String albumName, String albumId) {
+    public String getAlbumPicture() {
+        return albumPicture;
+    }
+
+    public Album(String albumName, String albumId, String picture_url) {
         this.albumName = albumName;
         this.albumId = albumId;
+        this.albumPicture = picture_url;
     }
 
 
@@ -57,5 +63,6 @@ public class Album implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.albumName);
         dest.writeString(this.albumId);
+        dest.writeString(this.albumPicture);
     }
 }

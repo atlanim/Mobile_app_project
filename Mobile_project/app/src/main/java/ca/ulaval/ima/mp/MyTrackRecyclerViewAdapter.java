@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import ca.ulaval.ima.mp.TrackFragment.OnListTrackFragmentInteractionListener;
 import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
@@ -38,7 +41,6 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getTrackName());
         holder.mArtistName.setText("Artiste:   "   + mValues.get(position).getArtistName());
-
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

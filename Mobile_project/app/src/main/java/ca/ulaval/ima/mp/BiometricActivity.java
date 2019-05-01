@@ -4,12 +4,16 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +22,9 @@ import android.widget.Toast;
 
 public class BiometricActivity extends AppCompatActivity {
     private CancellationSignal cancellationSignal;
+    private Me me = null;
+    private UserParameters currentUserParameters;
+
 
 
     @TargetApi(Build.VERSION_CODES.P)
@@ -25,8 +32,12 @@ public class BiometricActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biometric);
-        Log.d("here", "here");
-        if (checkBiometricSupport() == true)
+        Intent intent = getIntent();
+        if (null != intent) {
+            me = intent.getParcelableExtra("me");
+            currentUserParameters = intent.getParcelableExtra("currentUserParameters");
+        }
+        if (checkBiometricSupport())
             authenticateUser(getWindow().getDecorView().getRootView());
     }
 
@@ -61,6 +72,15 @@ public class BiometricActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent mIntent = new Intent(this, Home.class);
+        Bundle mBundle = new Bundle();
+        mBundle.putParcelable("currentUserParameters", currentUserParameters);
+        mIntent.putExtras(mBundle);
+        startActivity(mIntent);
     }
 
     private CancellationSignal getCancellationSignal() {
@@ -121,6 +141,12 @@ public class BiometricActivity extends AppCompatActivity {
                     BiometricPrompt.AuthenticationResult result) {
                 notifyUser("Authentication Succeeded");
                 super.onAuthenticationSucceeded(result);
+                Fragment newMeFragment = MeFragment.newInstance(me);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, newMeFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         };
     }

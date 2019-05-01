@@ -5,7 +5,7 @@
     android:id="@+id/home_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background_gradient"
     android:orientation="vertical"
     tools:context=".Home">
 
@@ -18,17 +18,26 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:backgroundTint="@color/colorAccent"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/app_name" />
+                app:title="@string/app_name">
+
+                <Button
+                    android:id="@+id/profil"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ic_avatar"
+                    android:backgroundTint="#ffffff" />
+            </android.support.v7.widget.Toolbar>
+
 
         </android.support.design.widget.AppBarLayout>
 
@@ -41,17 +50,25 @@
                 android:id="@+id/editTextSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/search_bar"
                 android:ems="12"
                 android:hint="Search album, playlist, etc..."
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
 
                     <RadioGroup
                         android:id="@+id/radioGroupSearchType"
@@ -61,74 +78,112 @@
 
                         <RadioButton
                             android:id="@+id/searchByPlaylist"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:textColor="#ffffff"
+                            android:buttonTint="#ffffff"
+                            android:background="@drawable/button_round"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="Playlist" />
 
                         <RadioButton
                             android:id="@+id/searchByTrack"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="130dp"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_round"
+                            android:layout_height="50dp"
+                            android:buttonTint="#ffffff"
+                            android:textStyle="bold"
+                            android:textColor="#ffffff"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="Track" />
 
                         <RadioButton
                             android:id="@+id/searchByAlbum"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="130dp"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_round"
+                            android:layout_height="50dp"
+                            android:textStyle="bold"
+                            android:textColor="#ffffff"
+                            android:buttonTint="#ffffff"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="Album" />
 
                         <RadioButton
                             android:id="@+id/searchByArtist"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="130dp"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="15sp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_round"
+                            android:textColor="#ffffff"
+                            android:buttonTint="#ffffff"
+                            android:textStyle="bold"
+                            android:layout_height="50dp"
                             android:gravity="center"
                             android:text="Artist" />
                     </RadioGroup>
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/serchButton"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Search"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/buttonPlaylist"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="My playlist"
-                    android:textAllCaps="false" />
-
-
-                <Button
-                    android:id="@+id/newPlaylisteButton"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="New playlist"
-                    android:textAllCaps="false"
-                    android:textSize="14sp" />
-            </LinearLayout>
 
             <ScrollView
                 android:id="@+id/result"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:layout_weight="200" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonPlaylist"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="My playlist"
+                        android:background="@drawable/button_round"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="#ffffff"
+                        android:textAllCaps="true" />
+
+
+                    <Button
+                        android:id="@+id/newPlaylisteButton"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="New playlist"
+                        android:background="@drawable/button_round"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:textAllCaps="true"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

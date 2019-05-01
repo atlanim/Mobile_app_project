@@ -7,11 +7,12 @@ public class Artist implements Parcelable {
 
     private String artistName;
     private String artistId;
+    private String artistPicture;
 
     public Artist(Parcel in) {
         this.artistName = in.readString();
         this.artistId =  in.readString();
-
+        this.artistPicture = in.readString();
     }
 
 
@@ -35,10 +36,14 @@ public class Artist implements Parcelable {
     public String getArtistName() {
         return artistName;
     }
+    public String getArtistPicture() {
+        return artistPicture;
+    }
 
-    public Artist(String artistName, String artistId) {
+    public Artist(String artistName, String artistId, String picture_url) {
         this.artistName = artistName;
         this.artistId = artistId;
+        this.artistPicture = picture_url;
     }
 
 
@@ -56,5 +61,6 @@ public class Artist implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.artistName);
         dest.writeString(this.artistId);
+        dest.writeString(this.artistPicture);
     }
 }

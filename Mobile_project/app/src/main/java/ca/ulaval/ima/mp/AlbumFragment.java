@@ -52,10 +52,10 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_album_list, container, false);
-
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+        View Recycler_view = view.findViewById(R.id.list);
+        if (Recycler_view instanceof RecyclerView) {
+            Context context = Recycler_view.getContext();
+            RecyclerView recyclerView = (RecyclerView) Recycler_view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new MyAlbumRecyclerViewAdapter(mAlbums, mListener));
         }

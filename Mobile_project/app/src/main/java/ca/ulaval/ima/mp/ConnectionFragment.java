@@ -46,7 +46,8 @@ public class ConnectionFragment extends Fragment implements MyWebViewClient.OnGe
     private String mParam2;
 
     private OnFragmentConnectionInteractionListener mListener;
-    private  String uriAuth = "https://accounts.spotify.com/authorize?client_id=1ebb5b8a927a4b5c8ecfe45c5a05c541&response_type=code&redirect_uri=https://www.google.com/" ;
+    private String scope = "user-read-private user-read-email user-read-birthdate";
+    private  String uriAuth = "https://accounts.spotify.com/authorize?client_id=1ebb5b8a927a4b5c8ecfe45c5a05c541&scope="+scope+"&response_type=code&redirect_uri=https://www.google.com/" ;
     private String REDIRECT_URI = "https://www.google.com/";
     private String code = "";
     private WebView webView ;

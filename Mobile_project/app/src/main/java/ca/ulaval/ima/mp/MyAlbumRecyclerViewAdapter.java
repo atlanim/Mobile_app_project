@@ -4,12 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import ca.ulaval.ima.mp.AlbumFragment.OnListFragmentAlbumInteractionListener;
 import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
 
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -37,6 +42,7 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getAlbumName());
+        Picasso.get().load(mValues.get(position).getAlbumPicture()).into(holder.mImageView);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,12 +63,14 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
+        public final ImageView mImageView;
         public Album mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
+            mImageView = (ImageView) view.findViewById(R.id.picture);
         }
 
         @Override

@@ -6,10 +6,12 @@ import android.os.Parcelable;
 public class PlayList implements Parcelable {
     private String playListName;
     private String playListId;
+    private String playListPicture;
 
     public PlayList(Parcel in) {
         this.playListName = in.readString();
         this.playListId =  in.readString();
+        this.playListPicture = in.readString();
 
     }
 
@@ -36,9 +38,14 @@ public class PlayList implements Parcelable {
         return playListName;
     }
 
-    public PlayList(String playListName, String playListId) {
+    public String getPlayListPicture() {
+        return playListPicture;
+    }
+
+    public PlayList(String playListName, String playListId, String picture_url) {
         this.playListName = playListName;
         this.playListId = playListId;
+        this.playListPicture = picture_url;
     }
 
 
@@ -57,5 +64,6 @@ public class PlayList implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.playListName);
         dest.writeString(this.playListId);
+        dest.writeString(this.playListPicture);
     }
 }
