@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
 import ca.ulaval.ima.mp.TrackFragment.OnListTrackFragmentInteractionListener;
 import ca.ulaval.ima.mp.dummy.DummyContent.DummyItem;
@@ -23,10 +23,12 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
 
     private final List<Track> mValues;
     private final OnListTrackFragmentInteractionListener mListener;
+    private boolean isMyPlaylistTrack;
 
-    public MyTrackRecyclerViewAdapter(List<Track> tracks, OnListTrackFragmentInteractionListener listener) {
+    public MyTrackRecyclerViewAdapter(List<Track> tracks, OnListTrackFragmentInteractionListener listener, boolean isMyPlaylistTrack) {
         mValues = tracks;
         mListener = listener;
+        isMyPlaylistTrack = isMyPlaylistTrack;
     }
 
     @Override
@@ -45,7 +47,8 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+
+                    mListener.playAudio(holder.mItem.getTrackId());
                 }
             }
         });
@@ -53,7 +56,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                    mListener.playVideo(holder.mItem.getTrackId());
                 }
             }
         });
@@ -61,7 +64,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                    mListener.addTrackInPlaylist(holder.mItem.getTrackId());
                 }
             }
         });
@@ -69,7 +72,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListAlbumTrackFragmentInteraction(holder.mItem.getTrackId());
+                    mListener.removeTrackInPlaylist(holder.mItem.getTrackId(), holder.mItem.getPlayListId());
                 }
             }
         });
@@ -107,6 +110,9 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             mPlay_video = (ImageView) view.findViewById(R.id.play_video);
             mAdd = (ImageView) view.findViewById(R.id.add);
             mDelete = (ImageView) view.findViewById(R.id.delete);
+            if(!isMyPlaylistTrack){
+                mDelete.setEnabled(false);
+            }
         }
 
         @Override

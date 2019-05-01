@@ -12,6 +12,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="scope_prompt">Choose a scope</string>
+
+    <string-array name="scope_arrays">
+        <item>public</item>
+        <item>private</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
