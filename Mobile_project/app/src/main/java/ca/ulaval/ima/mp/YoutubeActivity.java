@@ -93,10 +93,11 @@ public class YoutubeActivity extends YouTubeBaseActivity {
         YouTube.Search.List request = youtubeService.search()
                 .list("snippet");
         SearchListResponse response = request.setKey(API_KEY)
-                .setQ(Title + Artist +"vevo")
+                .setQ(Title.toString() + " "  + Artist + " vevo")
                 .execute();
 
         JSONObject videofind = new JSONObject(response);
+        System.out.println(videofind);
         JSONArray response_array = videofind.getJSONArray("items");
         JSONObject test = response_array.getJSONObject(0);
         System.out.println(test);

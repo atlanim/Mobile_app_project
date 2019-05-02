@@ -72,16 +72,18 @@ public class TrackFragment extends Fragment {
         ImageView picture_all = view.findViewById(R.id.picture_all);
         RelativeLayout picture_all_container = view.findViewById(R.id.picture_all_container);
         final SharedPreferences prefs = getContext().getSharedPreferences(myprefs, Context.MODE_PRIVATE);
-        String pics_check = prefs.getString("playlist_cover", null);
+        String pics_check = "";
+        pics_check = prefs.getString("playlist_cover", null);
         System.out.println(pics_check);
-        String pics_check2 = prefs.getString("album_cover", null);
+        String pics_check2 = "";
+        pics_check2 = prefs.getString("album_cover", null);
         System.out.println(pics_check2);
         if (pics_check == null || pics_check.equals("") && pics_check2 == null || pics_check2.equals(""))
         {
             System.out.println("here 3");
             picture_all_container.setVisibility(View.GONE);
         }
-        if (!pics_check2.equals("") || pics_check2 != null && pics_check == "" || pics_check == null)
+        else if (!pics_check2.equals("") || pics_check2 != null && pics_check == "" || pics_check == null)
         {
             System.out.println("here 6");
             picture_all.setVisibility(View.VISIBLE);
@@ -91,7 +93,7 @@ public class TrackFragment extends Fragment {
                         .into(picture_all);
             }
         }
-        if (pics_check2.equals("") || pics_check2 == null && pics_check != "" || pics_check != null){
+        else if (pics_check2.equals("") || pics_check2 == null && pics_check != "" || pics_check != null){
             System.out.println("here 7");
             picture_all.setVisibility(View.VISIBLE);
             if (android.os.Build.VERSION.SDK_INT >= 20) {
