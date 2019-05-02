@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,10 +19,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,38 +32,25 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Home extends AppCompatActivity implements AlbumFragment.OnListFragmentAlbumInteractionListener,
-        TrackFragment.OnListTrackFragmentInteractionListener,
-        ArtistFragment.OnListFragmentArtistInteractionListener,
-        PlaylistFragment.OnListPlayListFragmentInteractionListener {
+public class Home extends AppCompatActivity implements AlbumFragment.OnListFragmentAlbumInteractionListener, TrackFragment.OnListTrackFragmentInteractionListener, ArtistFragment.OnListFragmentArtistInteractionListener, PlaylistFragment.OnListPlayListFragmentInteractionListener {
 
     private EditText editTextSearch;
     private RadioGroup searchType;
     private Button myPlayListButton;
+    private ImageView Searchbutton;
     private Button profilButton;
-    private Button newPlaylistButton;
     private UserParameters currentUserParameters;
     private ArrayList<Album> albums = new ArrayList<>();
     private ArrayList<Track> tracks = new ArrayList<>();
     private Me me = null;
     private ArrayList<Artist> artists = new ArrayList<>();
+    private ArrayList<PlayList> playLists;
     private String myprefs = "MyPrefs";
-    private ArrayList<PlayList> playLists = new ArrayList<>();
-    private View popupInputDialogView = null;
-    private EditText playlistNameEditText = null;
-    private EditText descriptionEditText = null;
-    private Spinner scopeSpinner = null;
-    private Button createPlayList= null;
-    private Button cancelcreatePlaylistButton = null;
-    private boolean isPlaylistTrack = false;
 
 
     @Override
@@ -77,21 +63,10 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
         editTextSearch = findViewById(R.id.editTextSearch);
         searchType = findViewById(R.id.radioGroupSearchType);
         myPlayListButton = findViewById(R.id.buttonPlaylist);
-        newPlaylistButton = findViewById(R.id.newPlaylisteButton);
         profilButton = findViewById(R.id.profil);
+        Searchbutton = findViewById(R.id.buttonsearch);
         currentUserParameters = getIntent().getExtras().getParcelable("currentUserParameters");
-        editTextSearch.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_DONE) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-                    search();
-                    return true;
-                }
-                return false;
-            }
-        });
+
         myPlayListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,127 +79,16 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 me();
             }
         });
-        newPlaylistButton.setOnClickListener(new View.OnClickListener() {
+        Searchbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                showCreationPlaylistInputDialog();
+            public void onClick(View view) {
+                search();
             }
         });
         setSupportActionBar(toolbar);
     }
 
-    private void showCreationPlaylistInputDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Create playlist");
-        alertDialogBuilder.setCancelable(false);
-        initPopupViewItems();
-        alertDialogBuilder.setView(popupInputDialogView);
-        final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-        createPlayList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createNewPlaylist();
-            }
-        });
-        cancelcreatePlaylistButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
-            }
-        });
-    }
-
-    private void createNewPlaylist() {
-        String playlistName = playlistNameEditText.getText().toString();
-        String playlistDescription = descriptionEditText.getText().toString();
-        String scope = scopeSpinner.getSelectedItem().toString();
-        executePlayListCreationRequest(playlistName, playlistDescription, scope);
-    }
-
-    private void executePlayListCreationRequest(String playlistName, String playlistDescription, String scope) {
-        String createPlaylistUrl = " https://api.spotify.com/v1/playlists";
-        OkHttpClient client = new OkHttpClient();
-        RequestBody formBody = new FormBody.Builder()
-                .add("name", playlistName)
-                .add("description", playlistDescription)
-                .add("public", scope)
-                .build();
-        Request request = new Request.Builder()
-                .url(createPlaylistUrl)
-                .post(formBody)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                {
-                    displayToast("The playlist has been create with sucess");
-                }
-            }
-        });
-
-
-    }
-
-    public void displayToast(final String message) {
-
-        this.runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(Home.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-
-    private void initPopupViewItems()
-    {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        popupInputDialogView = layoutInflater.inflate(R.layout.popup_input_dialog, null);
-        playlistNameEditText = (EditText) popupInputDialogView.findViewById(R.id.playlistName_editText);
-        descriptionEditText = (EditText) popupInputDialogView.findViewById(R.id.description);
-        scopeSpinner = (Spinner) popupInputDialogView.findViewById(R.id.spinner_scope);
-        createPlayList = popupInputDialogView.findViewById(R.id.button_create_playlist);
-        cancelcreatePlaylistButton = popupInputDialogView.findViewById(R.id.button_cancel_creation);
-    }
-
-
     private void findMyPlayList() {
-        String token = currentUserParameters.getAccessToken();
-        OkHttpClient client = new OkHttpClient();
-        String searchUrl = "https://api.spotify.com/v1/me/playlists";
-        HttpUrl httpUrl = HttpUrl.parse(searchUrl).newBuilder().build();
-        Request request = new Request.Builder()
-                .url(httpUrl)
-                .header("Authorization", "Bearer " + token)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    String responseString = response.body().string();
-                    isPlaylistTrack = true;
-                    findPlayLists(responseString);
-                    openPlaylistFragment();
-                }
-            }
-
-            ;
-        });
-
     }
 
     private void search() {
@@ -253,8 +117,8 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 if (!response.isSuccessful()) {
                     throw new IOException("Unexpected code " + response);
                 } else {
-                    String responseString = response.body().string();
-                    openSearchResultFragment(responseString);
+                    String ResponseString = response.body().string();
+                    openSearchResultFragment(ResponseString);
                 }
             }
 
@@ -286,11 +150,12 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 if (!response.isSuccessful()) {
                     throw new IOException("Unexpected code " + response);
                 } else {
-                    String responseString = response.body().string();
-                    getMe(responseString);
+                    String ResponseString = response.body().string();
+                    getMe(ResponseString);
                 }
             }
 
+            ;
         });
 
     }
@@ -349,9 +214,9 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 Track track = null;
                 JSONObject trackItem = itemJArray.getJSONObject(i);
                 JSONObject trackobject = trackItem.getJSONObject("track");
-                String id = (String) trackobject .get("id");
-                String name = (String) trackobject .get("name");
-                JSONObject albumJson = trackobject .getJSONObject("album");
+                String id = (String) trackobject.get("id");
+                String name = (String) trackobject.get("name");
+                JSONObject albumJson = trackobject.getJSONObject("album");
                 JSONArray artists = albumJson.getJSONArray("artists");
                 JSONObject artistItem = artists.getJSONObject(0);
                 String artistName = (String) artistItem.get("name");
@@ -400,7 +265,6 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
                 }
                 this.tracks.add(track);
             }
-            openTrackFragment(noName, isPlaylistTrack);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -476,8 +340,8 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     }
 
-    private void openTrackFragment(String playlistName, boolean isMyPlaylisyTrack) {
-        Fragment newTrackFragment = TrackFragment.newInstance(playlistName, tracks, isMyPlaylisyTrack);
+    private void openTrackFragment(String playlistName) {
+        Fragment newTrackFragment = TrackFragment.newInstance(playlistName, tracks);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.home_activity, newTrackFragment);
@@ -555,6 +419,7 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
                 e.printStackTrace();
             }
+
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
@@ -584,48 +449,30 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     }
 
-    private void findPlayListTracks( String responseString, String playlistName, String playlistId) {
+    private void findAlbumTracks(String responseString) {
         try {
+            System.out.println("test");
             tracks = new ArrayList<>();
             JSONObject Jobject = new JSONObject(responseString);
-            JSONArray itemJArray = Jobject.getJSONArray("items");
+            JSONObject tracksJson = Jobject.getJSONObject("tracks");
+            JSONArray itemJArray = tracksJson.getJSONArray("items");
             final SharedPreferences prefs = getSharedPreferences(myprefs, Context.MODE_PRIVATE);
-            String picture = prefs.getString("album_picture", null);
+            String picture_url = prefs.getString("album_cover", null);
+            System.out.println(itemJArray);
             for (int i = 0; i < itemJArray.length(); i++) {
+                Track track = null;
                 JSONObject trackItem = itemJArray.getJSONObject(i);
-                JSONObject trackJson = trackItem.getJSONObject("track");
-                String name = (String) trackJson.get("name");
-                String id = (String) trackJson.get("id");
-                JSONArray artistArray  = trackJson.getJSONArray("artists");
-                JSONObject artistItem =  artistArray.getJSONObject(0);
-                String artistName = (String) artistItem.get("name");
-                Track track = new Track(name, id, artistName);
-                track.setPlayListId(playlistId);
-                this.tracks.add(track);
-            }
-            openTrackFragment(playlistName, isPlaylistTrack);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    private void findAlbumTracks(String responseString, String albumName) {
-        try {
-            tracks = new ArrayList<>();
-            JSONObject Jobject = new JSONObject(responseString);
-            JSONArray itemJArray = Jobject.getJSONArray("items");
-            for (int i = 0; i < itemJArray.length(); i++) {
-                JSONObject trackItem = itemJArray.getJSONObject(i);
+                String id = (String) trackItem.get("id");
+                String name = (String) trackItem.get("name");
                 JSONArray artists = trackItem.getJSONArray("artists");
                 JSONObject artistItem = artists.getJSONObject(0);
                 String artistName = (String) artistItem.get("name");
-                String id = (String) trackItem.get("id");
-                String name = (String) trackItem.get("name");
-                Track track = new Track(name, id, artistName, picture);
+                track = new Track(name, id, artistName, "");
                 this.tracks.add(track);
+                System.out.println(this.tracks.get(0).getTrackName());
             }
-            openTrackFragment(albumName, isPlaylistTrack);
         } catch (Exception exception) {
+            System.out.println("test");
             exception.printStackTrace();
         }
     }
@@ -663,34 +510,9 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     @Override
     public void onListFragmentAlbumInteraction(Album album) {
-        String searchUrl = "https://api.spotify.com/v1/albums/" + album.getAlbumId() + "/tracks";
+        String searchUrl = "https://api.spotify.com/v1/albums/" + album.getAlbumId();
         getTracks(searchUrl, true, 1);
         openTrackFragment(album.getAlbumName());
-    }
-
-    @Override
-    public void playAudio(String trackId) {
-        OkHttpClient client = new OkHttpClient();
-        RequestBody formBody = new FormBody.Builder()
-                .add( "context_uri", "spotify:track:" + trackId)
-                .add( "position_ms", "0")
-                .build();
-        Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me/player/play")
-                .put(formBody)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                {
-                }
-            }
-        });
     }
 
     @Override
@@ -698,47 +520,13 @@ public class Home extends AppCompatActivity implements AlbumFragment.OnListFragm
 
     }
 
+    @Override
+    public void playAudio(String trackId) {
 
+    }
 
     @Override
     public void removeTrackInPlaylist(String trackId, String playlistId) {
-    String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
-        JSONObject deletedJson = new JSONObject();
-        JSONArray trackArray = new JSONArray();
-        JSONObject trackToDeleteJson = new JSONObject();
-        try {
-
-            trackToDeleteJson.put("uri", "spotify:track:"+ trackId);
-            JSONArray positionArray = new JSONArray();
-            positionArray.put(0, 0);
-            trackToDeleteJson.put("positions", positionArray);
-            trackArray.put( trackToDeleteJson);
-            deletedJson.put("track", trackArray);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = (RequestBody) RequestBody.create(JSON, String.valueOf(deletedJson));
-        Request request = new Request.Builder()
-                .url(url)
-                .delete(body)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                {
-                    displayToast("The track has been deleted with sucess");
-                }
-            }
-        });
 
     }
 

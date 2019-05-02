@@ -7,11 +7,8 @@ public class Track implements Parcelable {
     private String trackName;
     private String trackId;
     private String artistName;
-<<<<<<< HEAD
     private String trackPicture;
-=======
     private String playListId = null;
->>>>>>> fetchData
 
     public Track(Parcel in) {
         this.trackName = in.readString();

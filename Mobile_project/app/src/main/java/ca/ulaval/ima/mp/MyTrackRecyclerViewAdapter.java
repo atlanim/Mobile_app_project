@@ -1,7 +1,9 @@
 package ca.ulaval.ima.mp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,8 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         holder.mItem = mValues.get(position);
         final SharedPreferences prefs = context.getSharedPreferences(myprefs, Context.MODE_PRIVATE);
         String check_pic = prefs.getString("playlist_cover", null);
-        if (check_pic == null || check_pic.equals(""))
+        String check_pic2 = prefs.getString("album_cover", null);
+        if ((check_pic == null || check_pic.equals("")) && (check_pic2 == null || check_pic2.equals("")) )
         {
             Picasso.get().load(mValues.get(position).getTrackPicture()).into(holder.mPicture);
             holder.mDelete.setVisibility(View.GONE);
@@ -76,6 +79,12 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             public void onClick(View v) {
                 if (null != mListener) {
                     mListener.playVideo(holder.mItem.getTrackId());
+                    Intent mIntent = new Intent(context, YoutubeActivity.class);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putString("title", holder.mItem.getTrackName());
+                    mBundle.putString("artist", holder.mItem.getArtistName());
+                    mIntent.putExtras(mBundle);
+                    context.startActivity(mIntent);
                 }
             }
         });

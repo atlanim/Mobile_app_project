@@ -45,12 +45,11 @@ public class TrackFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TrackFragment newInstance(String playListName, ArrayList<Track> tracks, boolean isMyPlaylistTrack) {
+    public static TrackFragment newInstance(String playListName, ArrayList<Track> tracks) {
         TrackFragment fragment = new TrackFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PLAYLIST_NAME, playListName);
         args.putParcelableArrayList(ARG_TRACK_LIST, tracks);
-        args.putBoolean(ARG_IS_MY__PLAYLIST_TRACK, isMyPlaylistTrack);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,7 +61,6 @@ public class TrackFragment extends Fragment {
         if (getArguments() != null) {
             mTracks = new ArrayList<>();
             mTracks = getArguments().getParcelableArrayList(ARG_TRACK_LIST);
-            isMyPlaylistTrack= getArguments().getBoolean(ARG_IS_MY__PLAYLIST_TRACK);
         }
     }
 
@@ -76,12 +74,25 @@ public class TrackFragment extends Fragment {
         final SharedPreferences prefs = getContext().getSharedPreferences(myprefs, Context.MODE_PRIVATE);
         String pics_check = prefs.getString("playlist_cover", null);
         System.out.println(pics_check);
-        if (pics_check == null || pics_check.equals(""))
+        String pics_check2 = prefs.getString("album_cover", null);
+        System.out.println(pics_check2);
+        if (pics_check == null || pics_check.equals("") && pics_check2 == null || pics_check2.equals(""))
         {
             System.out.println("here 3");
             picture_all_container.setVisibility(View.GONE);
         }
-        else {
+        if (!pics_check2.equals("") || pics_check2 != null && pics_check == "" || pics_check == null)
+        {
+            System.out.println("here 6");
+            picture_all.setVisibility(View.VISIBLE);
+            if (android.os.Build.VERSION.SDK_INT >= 20) {
+                Glide.with(getContext())
+                        .load(pics_check2)
+                        .into(picture_all);
+            }
+        }
+        if (pics_check2.equals("") || pics_check2 == null && pics_check != "" || pics_check != null){
+            System.out.println("here 7");
             picture_all.setVisibility(View.VISIBLE);
             if (android.os.Build.VERSION.SDK_INT >= 20) {
                 Glide.with(getContext())
@@ -89,6 +100,7 @@ public class TrackFragment extends Fragment {
                         .into(picture_all);
             }
         }
+
         if (Recycler_view instanceof RecyclerView) {
             Context context = Recycler_view.getContext();
             RecyclerView recyclerView = (RecyclerView) Recycler_view;

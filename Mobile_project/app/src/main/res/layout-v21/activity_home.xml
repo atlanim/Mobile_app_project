@@ -36,7 +36,6 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/ic_avatar"
-                    android:textColor="#ffffff"
                     android:backgroundTint="#ffffff" />
             </android.support.v7.widget.Toolbar>
 
@@ -52,8 +51,8 @@
                 android:id="@+id/editTextSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/search_bar"
                 android:ems="12"
@@ -82,60 +81,60 @@
                             android:id="@+id/searchByPlaylist"
                             android:layout_width="130dp"
                             android:layout_height="50dp"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:textColor="#ffffff"
-                            android:buttonTint="#ffffff"
-                            android:background="@drawable/button_round"
                             android:layout_weight="1"
+                            android:background="@drawable/button_round"
+                            android:buttonTint="#ffffff"
                             android:gravity="center"
-                            android:text="Playlist" />
+                            android:text="Playlist"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
                         <RadioButton
                             android:id="@+id/searchByTrack"
                             android:layout_width="130dp"
-                            android:textSize="15sp"
+                            android:layout_height="50dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:background="@drawable/button_round"
-                            android:layout_height="50dp"
-                            android:buttonTint="#ffffff"
-                            android:textStyle="bold"
-                            android:textColor="#ffffff"
                             android:layout_weight="1"
+                            android:background="@drawable/button_round"
+                            android:buttonTint="#ffffff"
                             android:gravity="center"
-                            android:text="Track" />
+                            android:text="Track"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
                         <RadioButton
                             android:id="@+id/searchByAlbum"
                             android:layout_width="130dp"
-                            android:textSize="15sp"
+                            android:layout_height="50dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:background="@drawable/button_round"
-                            android:layout_height="50dp"
-                            android:textStyle="bold"
-                            android:textColor="#ffffff"
-                            android:buttonTint="#ffffff"
                             android:layout_weight="1"
+                            android:background="@drawable/button_round"
+                            android:buttonTint="#ffffff"
                             android:gravity="center"
-                            android:text="Album" />
+                            android:text="Album"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
                         <RadioButton
                             android:id="@+id/searchByArtist"
                             android:layout_width="130dp"
+                            android:layout_height="50dp"
                             android:layout_marginLeft="5dp"
-                            android:textSize="15sp"
                             android:layout_marginRight="5dp"
                             android:background="@drawable/button_round"
-                            android:textColor="#ffffff"
                             android:buttonTint="#ffffff"
-                            android:textStyle="bold"
-                            android:layout_height="50dp"
                             android:gravity="center"
-                            android:text="Artist" />
+                            android:text="Artist"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
                     </RadioGroup>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -159,30 +158,42 @@
 
                     <Button
                         android:id="@+id/buttonPlaylist"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="My playlist"
-                        android:background="@drawable/button_round"
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:textColor="#ffffff"
-                        android:textAllCaps="true" />
+                        android:layout_weight="2"
+                        android:background="@drawable/button_round"
+                        android:text="My playlist"
+                        android:textAllCaps="true"
+                        android:textColor="#ffffff" />
+
+
+                    <ImageView
+                        android:id="@+id/buttonsearch"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_round"
+                        android:src="@drawable/ic_musica_searcher"
+                        android:textAllCaps="true"
+                        android:textColor="#ffffff" />
 
 
                     <Button
                         android:id="@+id/newPlaylisteButton"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="New playlist"
-                        android:background="@drawable/button_round"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:textAllCaps="true"
-                        android:textColor="#ffffff"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/button_round"
+                        android:text="New playlist"
+                        android:textAllCaps="true"
+                        android:textColor="#ffffff"
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
