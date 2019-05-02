@@ -30,12 +30,13 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
     private final OnListTrackFragmentInteractionListener mListener;
     private final Context context;
     private String myprefs = "MyPrefs";
+    private boolean isMyPlaylistTrack;
 
-
-    public MyTrackRecyclerViewAdapter(List<Track> tracks, OnListTrackFragmentInteractionListener listener, Context context) {
+    public MyTrackRecyclerViewAdapter(List<Track> tracks, OnListTrackFragmentInteractionListener listener, Context context, boolean isMyPlaylistTrack) {
         mValues = tracks;
         mListener = listener;
         this.context = context;
+        this.isMyPlaylistTrack = isMyPlaylistTrack;
         System.out.println("here 8");
     }
 
@@ -142,6 +143,9 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
             mDelete = (ImageView) view.findViewById(R.id.delete);
             mPicture_all =(ImageView) view.findViewById(R.id.picture_all);
             mPicture =(ImageView) view.findViewById(R.id.picture);
+            if(!isMyPlaylistTrack){
+                mDelete.setEnabled(false);
+            }
         }
 
         @Override

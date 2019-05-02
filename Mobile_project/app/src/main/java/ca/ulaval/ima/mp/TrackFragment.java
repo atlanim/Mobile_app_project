@@ -35,6 +35,8 @@ public class TrackFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListTrackFragmentInteractionListener mListener;
     private ArrayList<Track> mTracks;
+    private static final String ARG_IS_MY__PLAYLIST_TRACK ="isMyPlaylistTrack" ;
+    private  boolean isMyPlaylistTrack = false;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -45,11 +47,12 @@ public class TrackFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TrackFragment newInstance(String playListName, ArrayList<Track> tracks) {
+    public static TrackFragment newInstance(String playListName, ArrayList<Track> tracks, boolean isMyPlaylistTrack) {
         TrackFragment fragment = new TrackFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PLAYLIST_NAME, playListName);
         args.putParcelableArrayList(ARG_TRACK_LIST, tracks);
+        args.putBoolean(ARG_IS_MY__PLAYLIST_TRACK, isMyPlaylistTrack);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +64,7 @@ public class TrackFragment extends Fragment {
         if (getArguments() != null) {
             mTracks = new ArrayList<>();
             mTracks = getArguments().getParcelableArrayList(ARG_TRACK_LIST);
+            isMyPlaylistTrack= getArguments().getBoolean(ARG_IS_MY__PLAYLIST_TRACK);
         }
     }
 
@@ -107,7 +111,7 @@ public class TrackFragment extends Fragment {
             Context context = Recycler_view.getContext();
             RecyclerView recyclerView = (RecyclerView) Recycler_view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(mTracks, mListener, getContext()));
+            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(mTracks, mListener, getContext(), isMyPlaylistTrack));
         }
         return view;
     }
